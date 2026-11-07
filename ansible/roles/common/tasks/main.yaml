@@ -1,0 +1,26 @@
+- name: Remove "rt-tests" package
+  apt:
+    name: rt-tests
+    state: absent
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - curl
+    - openssh-server
+    - stress-ng
+    - bison
+    - flex
+    - wget
+    - time
+    - bc
+    - xz-utils
+    - build-essential
+    - ca-certificates
+    - kexec-tools
+    - lsb-release
+    - python
+    - net-tools

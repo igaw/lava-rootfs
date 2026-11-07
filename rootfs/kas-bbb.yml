@@ -1,0 +1,44 @@
+---
+header:
+  version: 4
+
+machine: "beaglebone"
+
+repos:
+  meta-bbb:
+    url: "https://github.com/jumpnow/meta-bbb.git"
+    refspec: bb8761ff79e67750e4c0897da3fbc0cd342fd1c1
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: 16e22f3e37788afb83044f5089d24187d70094bd
+    layers:
+      meta:
+      meta-poky:
+  meta-openembedded:
+    url: "https://github.com/openembedded/meta-openembedded.git"
+    refspec: dfbdd28d206a74bf264c2f7ee0f7b3e5af587796
+    layers:
+      meta-oe:
+      meta-python:
+      meta-networking:
+  meta-qt:
+    url: http://code.qt.io/yocto/meta-qt5.git
+    refspec: e0db5666f9c04c92683514ca220b0aafd0a49df2
+
+bblayers_conf_header:
+  bbb-cip: |
+    POKY_BBLAYERS_CONF_VERSION = "2"
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+  bbb-cip: |
+    CONF_VERSION = "1"
+    PATCHRESOLVE = "noop"
+    SSTATE_DIR ?= "${TOPDIR}/sstate-cache"
+    DL_DIR ?= "${TOPDIR}/downloads"
+    TMPDIR ?= "${TOPDIR}/tmp"
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    CORE_IMAGE_EXTRA_INSTALL_append = "openssh nfs-utils rt-tests strace procps packagegroup-core-buildessential "
+    DISTRO_FEATURES_append = " nfs"
+    IMAGE_FSTYPES_append = " cpio.xz"

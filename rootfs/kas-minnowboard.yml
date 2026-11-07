@@ -1,0 +1,49 @@
+---
+header:
+  version: 8
+
+machine: "intel-corei7-64"
+
+repos:
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: pyro-17.0.2
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  meta-intel:
+      url: "https://git.yoctoproject.org/git/meta-intel"
+      refspec: 70a6f8f3ff02c2ed2f8dc7b9b861c9731bc40e69
+  meta-srt:
+      url: "https://github.com/igaw/meta-srt.git"
+      refspec: df0a30191e9d3b2c1bb30f38cda8bcd7b5fd1cd1
+
+bblayers_conf_header:
+  meta-cpu1518mfp: |
+    POKY_BBLAYERS_CONF_VERSION = "2"
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+  meta-cpu1518mfp: |
+    CONF_VERSION = "1"
+    PATCHRESOLVE = "noop"
+    SSTATE_DIR ?= "${TOPDIR}/sstate-cache"
+    DL_DIR ?= "${TOPDIR}/downloads"
+    TMPDIR ?= "${TOPDIR}/tmp"
+    DISTRO_FEATURES_append = " nfs"
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    CORE_IMAGE_EXTRA_INSTALL += "initscripts openssh nfs-utils rt-tests strace procps kexec-tools"
+    DISTRO_FEATURES_append = " nfs sysvinit"
+    SYSLINUX_OPTS = "serial 0 115200"
+    SERIAL_CONSOLE = "115200 ttyS0"
+    APPEND += "console=ttyS0,115200 console=tty0"
+    VIRTUAL-RUNTIME_dev_manager = "busybox-mdev"
+    VIRTUAL-RUNTIME_login_manager = "busybox"
+    VIRTUAL-RUNTIME_syslog = "sysklogd"
+    VIRTUAL-RUNTIME_login_manager ?= "busybox"
+    VIRTUAL-RUNTIME_init_manager ?= "sysvinit"
+    VIRTUAL-RUNTIME_initscripts ?= "initscripts"
+    VIRTUAL-RUNTIME_keymaps ?= "keymaps"
+    IMAGE_FSTYPES = "cpio.gz"
